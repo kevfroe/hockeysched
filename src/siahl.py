@@ -46,11 +46,11 @@ def read_all_games(teamname, url):
     for idx, game in enumerate(table.contents[2:]):
         game_items = [item.text.strip() for item in game.contents]
         new_game = {key:value for key, value in zip(header_items, game_items)}
-        home_goals = game_items[9]
-        away_goals = game_items[7]
+        home_goals = game_items[9].strip()
+        away_goals = game_items[7].strip()
         new_game['was_shootout'] = 'S' in home_goals or 'S' in away_goals
-        new_game['home_goals'] = int(home_goals.split(' ')[0])
-        new_game['away_goals'] = int(away_goals.split(' ')[0])
+        new_game['home_goals'] = 0 if home_goals == "" else int(home_goals.split(' ')[0])
+        new_game['away_goals'] = 0 if away_goals == "" else int(away_goals.split(' ')[0])
         new_game['idx'] = idx
         games.append(Game(new_game, teamname))
     return games
